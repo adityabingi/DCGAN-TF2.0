@@ -82,10 +82,9 @@ class DCGAN:
 		#run g_optim twice to make sure d_loss doesn't go to zero
 		with tf.GradientTape() as gen_tape:
 			generated_imgs = self.gen_model(noise, training=True)
-			#real_output = self.disc_model(real_imgs, training=True)
 			fake_output = self.disc_model(generated_imgs, training=True)
-			#d_loss = self.disc_loss(real_output, fake_output)
 			g_loss = self.gen_loss(fake_output)
+
 		G_grads = gen_tape.gradient(g_loss, self.gen_model.trainable_variables)
 		self.gen_optimizer.apply_gradients(zip(G_grads, self.gen_model.trainable_variables))
 
@@ -121,7 +120,7 @@ class DCGAN:
 			print('.........................................')
 			for one_batch in dist_dataset:
 				total_g_loss, total_d_loss = self.distribute_trainstep(one_batch)
-				#print(num_batches)
+
 				with self.train_writer.as_default():
 					tf.summary.scalar('generator_loss',total_g_loss, step=num_batches)
 					tf.summary.scalar('discriminator_loss',total_d_loss, step=num_batches)
