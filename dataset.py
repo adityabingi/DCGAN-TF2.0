@@ -54,7 +54,7 @@ def prepare_dataset(tfrecord_file):
 
 	dataset = tf.data.TFRecordDataset(tfrecord_file)
 	dataset = dataset.map(map_func=parse_fn, num_parallel_calls= Config.parallel_threads)
-	#dataset = dataset.shuffle(buffer_size=Config.total_training_imgs)
+	#dataset = dataset.shuffle(buffer_size=Config.total_training_imgs, reshuffle_each_iteration=False)
 	dataset = dataset.batch(batch_size=Config.global_batchsize, drop_remainder=True)
 	dataset = dataset.prefetch(buffer_size = tf.data.experimental.AUTOTUNE)
 	return dataset

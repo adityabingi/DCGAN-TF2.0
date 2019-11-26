@@ -1,6 +1,7 @@
-import PIL
 import glob
 import numpy as np
+from PIL import Image
+from config import Config
 
 def adjust_data_range(data, drange_in, drange_out):
 
@@ -30,7 +31,7 @@ def convert_to_pil_image(image, drange=[0,1]):
     image = adjust_data_range(image, drange, [0,255])
     image = np.rint(image).clip(0, 255).astype(np.uint8)
     format = 'RGB' if image.ndim == 3 else 'L'
-    return PIL.Image.fromarray(image, format)
+    return Image.fromarray(image, format)
 
 def save_image(image, filename, drange=[0,1], quality=95):
 
@@ -44,15 +45,21 @@ def save_image_grid(images, filename, drange=[0,1], grid_size=None):
 
     save_image(make_grid(images, grid_size), filename, drange)
 
-def make_training_gif(img_dir):
+def make_training_gif():
+    image_grids = []
+    filenames = sorted(glob.glob(Config.results_dir+'fakes_*.jpg'))
+    for file in filenames:
+        epoch_num = int(file.split('_')[1][-2:])
+        batch_num = int(file.split('_')[-1].split('.')[0][-5:])
+        print(epoch_num)
+        print(batch_num)
+        if epoch_num< 2 or(epoch_num>2 and batch_num%4000==0):
+            image = Image.open(file)
+            image_grids.append(image)
+    image_grids[0].save(Config.results_dir+'vae_training.gif', format='GIF', append_images=image_grids[1:], save_all=True, duration=500, loop=0)
 
-	image_grids = []
-	filenames = sorted(glob.glob('fake_*.jpg'))
-	for file in filenames:
-		image = PIL.Image.open(file)
-		image_grids.append(image)
-	image_grids[0].save('vae_training.gif',
-                        format='GIF', 
-                        append_images=image_grids[1:],
-                        save_all=True,
-                        duration=1000,loop=0)
+def main():
+    make_training_gif()
+
+if __name__ == '__main__':
+    main()
