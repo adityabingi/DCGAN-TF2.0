@@ -15,8 +15,8 @@ def leaky_ReLU(leak=0.2):
 def batch_norm(axis=-1):
 
 	return tf.keras.layers.BatchNormalization(momentum=Config.momentum,\
-											epsilon=Config.epsilon,
-											axis=axis)
+			epsilon=Config.epsilon,
+			axis=axis)
 def flatten():
 
 	return tf.keras.layers.Flatten()
@@ -24,31 +24,31 @@ def flatten():
 def linear(units, use_bias=False):
 
 	return tf.keras.layers.Dense(units = units,\
-								kernel_initializer = w_init,
-								use_bias=use_bias,
-								bias_initializer=b_init)
+			kernel_initializer = w_init,
+			use_bias=use_bias,
+			bias_initializer=b_init)
 
 def conv_layer(filters, kernel_size, strides, use_bias=False):
 
 	return tf.keras.layers.Conv2D(filters = filters,\
-								kernel_size = kernel_size,
-								strides = strides,
-								padding='same',
-								data_format='channels_last',
-								kernel_initializer = w_init,
-								use_bias=use_bias,
-								bias_initializer=b_init )
+			kernel_size = kernel_size,
+			strides = strides,
+			padding='same',
+			data_format='channels_last',
+			kernel_initializer = w_init,
+			use_bias=use_bias,
+			bias_initializer=b_init )
 
 def transpose_conv_layer(filters, kernel_size, strides,use_bias=False):
 	
 	return tf.keras.layers.Conv2DTranspose(filters= filters,\
-										kernel_size =kernel_size,
-										strides = strides,
-										padding='same',
-										data_format='channels_last',
-										kernel_initializer = w_init,
-										use_bias=use_bias,
-										bias_initializer=b_init)
+			kernel_size =kernel_size,
+			strides = strides,
+			padding='same',
+			data_format='channels_last',
+			kernel_initializer = w_init,
+			use_bias=use_bias,
+			bias_initializer=b_init)
 
 class ConvBlock(tf.keras.Model):
 

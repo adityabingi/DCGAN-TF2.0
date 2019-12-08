@@ -23,11 +23,11 @@ class DCGAN:
 		self.disc_optimizer = tf.keras.optimizers.Adam(learning_rate=Config.disc_lr, beta_1=Config.beta1, beta_2=Config.beta2)
 		self.train_writer = tf.summary.create_file_writer(Config.summaryDir+'train')
 
-		self.ckpt = tf.train.Checkpoint(step=tf.Variable(0),
-										generator_optimizer=self.gen_optimizer,
-										generator_model = self.gen_model,
-										discriminator_optimizer=self.disc_optimizer,
-										discriminator_model=self.disc_model)
+		self.ckpt = tf.train.Checkpoint(step=tf.Variable(0),\
+					generator_optimizer=self.gen_optimizer,
+					generator_model = self.gen_model,
+					discriminator_optimizer=self.disc_optimizer,
+					discriminator_model=self.disc_model)
 
 		self.ckpt_manager = tf.train.CheckpointManager(self.ckpt, Config.modelDir, max_to_keep=3)
 
@@ -44,7 +44,7 @@ class DCGAN:
 	def compute_loss(self, labels, predictions):
 
 		cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True,\
-											reduction=tf.keras.losses.Reduction.NONE)
+						reduction=tf.keras.losses.Reduction.NONE)
 		return cross_entropy(labels, predictions)
 
 	def disc_loss(self, real_output, fake_output):
@@ -98,7 +98,7 @@ class DCGAN:
 	@tf.function
 	def distribute_trainstep(self, dist_dataset):
 		per_replica_g_losses, per_replica_d_losses = self.strategy.experimental_run_v2(self.train_step,\
-																					args=(dist_dataset,))
+											args=(dist_dataset,))
 		total_g_loss = self.strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_g_losses,axis=0)
 		total_d_loss = self.strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_d_losses, axis=0)
 
