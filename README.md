@@ -21,7 +21,7 @@ Extract CelebA.zip and the images are found in the img_align_celeba folder.
 
 Data Processing:
 
-All the images in the celeba dataset are of (218*178*3) resolution and for this work all the images are cropped by carefully choosing the common face region (128*128*3) in all the images. Check data_crop in config.py
+All the images in the celeba dataset are of (218 ,178, 3) resolution and for this work all the images are cropped by carefully choosing the common face region (128, 128, 3) in all the images. Check data_crop in config.py
 
 ## Usage
 
