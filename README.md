@@ -25,9 +25,11 @@ All the images in the celeba dataset are of (218 ,178, 3) resolution and for thi
 
 ## Usage
 
-For training:
+For multi-gpu training:
 
 `python dcgan.py --train`
+
+To run on single GPU run the above code by replacing strategy = tf.distribute.MirroredStrategy(devices) (line 185 in dcgan.py) with strategy=tf.distribute.OneDeviceStrategy(devices) and configure devices variable by passing specific gpu number like "/device:GPU:0" or "/device:GPU:1" to devices or simply change num_gpu to 1 in config.py to use default single gpu.
 
 For Generating new samples:
 
